@@ -180,10 +180,10 @@ that there are two sections in this template, the **`head`** and the **`body`**:
 <!DOCTYPE html>
 <html>
     <head>
-            ← this section is called the "head" of the HTML document
+         <!-- this section is called the "head" of the HTML document -->
     </head>
     <body>
-            ← this section is called the "body" of the HTML document
+         <!-- this section is called the "body" of the HTML document -->
     </body>
 </html>
 ```
