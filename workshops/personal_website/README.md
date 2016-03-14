@@ -54,14 +54,14 @@ us a URL that we can share with the world.
    this in order for GitHub Pages to work correctly (we'll talk more about
    GitHub Pages later)
 
-   > ![](img/gh_create_new_repo.png)
+   ![](img/gh_create_new_repo.png)
 
 4. After you've double checked that your repository is correctly named, click
    the green "Create repository" button at the bottom.
 5. Yay! You've created your very first repository! Now, copy the "HTTPS link"
    at the top. You will need this link for the next step.
 
-   > ![](img/gh_copy_new_repo_link.png)
+   ![](img/gh_copy_new_repo_link.png)
 
 ### 3) Sign Up for Cloud9
 
@@ -71,20 +71,20 @@ code we'll write in Hack Club.
 1. In a new tab, open https://c9.io/
 2. In the top right hand corner, click the button that looks like this:
 
-   > ![](img/c9_gh_icon.png)
+   ![](img/c9_gh_icon.png)
 
 3. Click the green "Authorize application" button
 4. If there is a popup that asks for your email, go ahead and enter it
 5. Click the gray box that says "Create a new workspace"
 6. Set the "Workspace name" to `projects`
 
-   > ![](img/c9_name_workspace.png)
+   ![](img/c9_name_workspace.png)
 
 7. Make sure your workshop is set to "Public"
 8. Under "Clone from Git or Mercurial URL", paste the HTTPS Link that
    you copied from your GitHub repository
 
-   > ![](img/c9_clone_from_existing.png)
+   ![](img/c9_clone_from_existing.png)
 
 9. Make sure that you're using the "Custom" template
 10. Without changing anything else, scroll to the bottom and click the
