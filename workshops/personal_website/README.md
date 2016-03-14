@@ -201,7 +201,7 @@ Orpheus, I would right click it and get the source URL, which in this case is
 https://github.com/hackclub/dinosaurs/raw/master/smart_dinosaur_docs.png, and
 put it in an image tag like so:
 
-```
+```html
 <img src="https://github.com/hackclub/dinosaurs/raw/master/smart_dinosaur_docs.png" />
 ```
 
@@ -292,7 +292,7 @@ resize the image.
 
 Open up `styles.css` and type the following:
 
-```
+```css
 img {
     width: 200px;
 }
@@ -311,7 +311,7 @@ Next, we're going to center-align the entire body section.
 
 We'll add
 
-```
+```css
 body {
     text-align: center;
 }
@@ -325,7 +325,7 @@ Now let's change the font of our text. We'll add another attribute,
 `font-family`, to the `body` rule, and set the value to `"Arial"`. Now it will
 look like this:
 
-```
+```css
 body {
     text-align: center;
     font-family: "Arial";
