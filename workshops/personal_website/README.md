@@ -37,8 +37,9 @@ We'll be using it to store and manage our code in Hack Club.
     club meeting
   - When prompted to choose a plan, choose the "Free" plan
 2. Verify your email by checking the inbox of the email you used
-3. Open https://gh.hackclub.com in a new tab and star the project by clicking
-   the button that looks like this on the top right: ![](img/github_star.png)
+3. Open https://github.com/hackclub/hackclub in a new tab and star the project
+   by clicking the button that looks like this on the top right:
+   ![](img/github_star.png)
 
 ### 2) Create Your First GitHub Repository
 
