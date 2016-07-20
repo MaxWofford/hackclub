@@ -1,10 +1,8 @@
 # Geometric Pattern
 
-![](img/sample1.png)
-
 Short link to this workshop: https://workshops.hackclub.com/geometric_pattern
 
-[Demo](http://prophetorpheus.github.io/geometric_pattern/)
+[Demo](TODO)
 
 ---
 
@@ -79,110 +77,104 @@ function draw() {
 }
 ```
 
-p5.js works by automatically calling two special functions: [`setup()`](http://p5js.org/reference/#/p5/setup) and [`draw()`](http://p5js.org/reference/#p5/draw) to create the visuals on your webpage. We'll be writing our own code in these functions, so that p5.js can then run our code.
+p5.js works by automatically calling two special functions: [`setup`](http://p5js.org/reference/#/p5/setup) and [`draw`](http://p5js.org/reference/#p5/draw) to create the visuals on your webpage. We'll be writing our own code in these functions, so that p5.js can then run our code.
 
-`setup()` is run only once, at the beginning. `draw()` on the other hand, is run repeatedly after `setup()` finishes, and in this way, provides the basis for any animation or interaction you see in your project.
+`setup` is run only once, at the beginning. `draw` on the other hand, is run repeatedly after `setup` finishes, and in this way, provides the basis for any animation or interaction you see in your project.
 
 Let's save and refresh Live Preview.
 
-It looks like nothing, because our functions do nothing. Let's add something for `setup()` to set up.
+It looks like nothing, because our functions do nothing. Let's add something for `setup` to set up.
 
 ```js
 function setup() {
-  createCanvas(480, 600);
+  createCanvas(400, 600);
 }
 ```
 
-[`createCanvas()`](http://p5js.org/reference/#p5/createCanvas) is a function that takes two arguments (two numbers for width and height, respectively) and creates an [HTML canvas element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) (i.e., where your pattern will be contained) of that size.
+[`createCanvas`](http://p5js.org/reference/#p5/createCanvas) is a function that takes two arguments (two numbers for width and height, respectively) and creates an [HTML canvas element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) (i.e., where your pattern will be contained) of that size.
 
-In this project, we'll be creating a tiling of overlapping circles.
+In this project, we'll be creating a grid of rectangles. As a preliminary step, we can first create a row of rectangles.
 
-First, let's decide how many circles we want in each row. We can store this number in a variable **at the top, above both functions**:
+First, let's decide how many rectangles we want in the row. We can store this number in a variable **at the top, above both functions**:
 
 ```js
-var NUM_CIRCLES = 12;
+var NUM_RECTANGLES = 10;
 
 function setup() {
-  createCanvas(480, 600);
+  createCanvas(400, 600);
 }
 
 function draw() {
 }
 ```
 
-We'll use this to determine the diameter of the circles we want to draw, by doing some simple math. Let's declare a variable to store the value of the circle diameter; name it `circleDiameter`. Add the declaration at the top of the file, underneath `NUM_CIRCLES`, and define it within `setup()`:
+We'll use this to determine the width of the rectangles we want to draw, by doing some simple math. Let's declare a variable to store the value of the rectangle width; name it `rectangleWidth`. Add the declaration at the top of the file, underneath `NUM_RECTANGLES`, and define it within `setup`:
 
 ```js
-var NUM_CIRCLES = 12;
-var circleDiameter;
+var NUM_RECTANGLES = 10;
+var rectangleWidth;
 
 function setup() {
-  createCanvas(480, 600);
-  circleDiameter = width/NUM_CIRCLES;
+  createCanvas(400, 600);
+  rectangleWidth = width/NUM_RECTANGLES;
 }
 
 function draw() {
 }
 ```
 
-p5.js stores the width of the canvas in a variable named [`width`](http://p5js.org/reference/#/p5/width). By dividing the width by the number of circles, we can calculate the length of the diameter, which we'll store in `circleDiameter`.
+p5.js stores the width of the canvas in a variable named [`width`](http://p5js.org/reference/#/p5/width). By dividing the canvas width by the number of rectangles, we can calculate the rectangle width, which we'll store in `rectangleWidth`.
 
 ## Part III: Drawing on the Canvas
 
-### Drawing One Circle
+### Drawing a Rectangle
 
-p5.js makes drawing ellipses and circles easy with the function [`ellipse()`](http://p5js.org/reference/#p5/ellipse).
+p5.js makes drawing rectangles easy with the function [`rect`](http://p5js.org/reference/#p5/rect).
 
-Let's see the `ellipse()` function in action by drawing a circle in the middle of the screen:
+Let's see the `rect` function in action by drawing a rectangle at the top-left corner of the canvas.
 
 ```js
 function draw() {
-  ellipse(width/2,height/2,circleDiameter,circleDiameter);
+  rect(0, 0, rectangleWidth, height);
 }
 ```
 
-Save and refresh Live Preview. It might also be helpful to open up the external preview:
+Save and refresh Live Preview.
 
-![](img/c9_external_preview.gif)
-
-In this example, the first two arguments we pass to the ellipse function are the x and y coordinates of the center of the ellipse. We've passed in `width/2` and `height/2`, respectively, which means the center of the ellipse will also be the center of the canvas. The latter two arguments are the x-width and y-width of the ellipse. Since we want to draw a circle, we're passing the same value for both.
+In this example, the first two arguments we pass to the `rect` function are the x and y coordinates of the top-left corner of the rectangle. We've passed in 0 and 0, respectively, which means the top-left corner of the rectangle will also be the top-left corner of the canvas. The p5.js coordinate system is a bit different from the traditional cartesian plane you may be used to. The latter two arguments are the width and height of the rectangle. We've created one rectangle with the width of `rectangleWidth` and the height of `height` (the canvas height).
 
 You can play around with these values to get a better feel of how this function works.
 
-### Drawing a Row of Circles
+### Drawing a Row of Rectangles
 
-Let's try to draw a row of circles first. We'll want to place them `circleDiameter` away from each other. Modify your `draw()` function so it looks like this. Notice how we have to change the first argument (the x-coordinate) in each line.
+![](img/row_rect.png)
+
+Let's try to draw a row of rectangles first. We'll split the canvas into `NUM_RECTANGLES` rectangles, which means we'll want to draw a rectangle every `rectangleWidth`. Modify your `draw` function so it looks like this. Notice how we have to change the first argument (the x-coordinate) in each line.
 
 ```js
 function draw() {
-  ellipse(0, height/2, circleDiameter, circleDiameter);
-  ellipse(circleDiameter, height/2, circleDiameter, circleDiameter);
-  ellipse(2*circleDiameter, height/2, circleDiameter, circleDiameter);
-  ellipse(3*circleDiameter, height/2, circleDiameter, circleDiameter);
-  ellipse(4*circleDiameter, height/2, circleDiameter, circleDiameter);
+  rect(0, 0, rectangleWidth, height);
+  rect(rectangleWidth, 0, rectangleWidth, height);
+  rect(2*rectangleWidth, 0, rectangleWidth, height);
+  rect(3*rectangleWidth, 0, rectangleWidth, height);
+  rect(4*rectangleWidth, 0, rectangleWidth, height);
 }
 ```
 
-![](img/four_and_half_circles_middle.png)
+![](img/four_rectangles.png)
 
-So here we've drawn 4.5 circles. Why is there a half-circle? Check out the documentation for [`ellipse()`](http://p5js.org/reference/#p5/ellipse) and see if you can figure it out.
+We haven't filled up the canvas with rectangles yet. We could keep going, since we've allotted room for `NUM_RECTANGLES` rectangles. Or, we could use a construct in programming called a loop!
 
-Anyway, we can draw 7.5 more, since we've made room for 12 (when we set `NUM_CIRCLES`). Keep going until it looks like this:
+A loop can be used to repeat a set of instructions as many times as you decide. We'll be using a type of loop called a **for-loop**:
 
-![](img/twelve_circles_middle.png)
+![](img/for_loop.gif)
 
-Great, now that we've drawn one row of circles in the middle, we have to draw the other rows. Guess we'll be writing a lot of `ellipse()` statements.
-
-Just kidding! There's a construct in programming called a loop, and it repeats a set of instructions as many times as you decide.
-
-Let's remove all those repetitive lines and add a loop into our `draw()` function. We'll be using a type of loop called a **while-loop**, like so:
+Let's remove all those repetitive lines and add a loop into our `draw` function. Our `draw` function should now look like this:
 
 ```js
 function draw() {
-  var x = 0;
-  while (x <= width) {
+  for (var x = 0; x < width; x = x + rectangleWidth) {
 
-    x = x + circleDiameter;
   }
 }
 ```
@@ -190,280 +182,68 @@ function draw() {
 You'll notice there are multiple parts to this:
 
 - `var x = 0;`: this is a variable that will store the value of our x-coordinate as we draw ellipses across the row.
-- `while (x <= width)`: this is the header of the while-loop, and it means that the instructions within the loop should be executed as long as `x` is less than or equal to `width`.
+- `x < width`: this is the condition of the for-loop, and it means that the instructions within the loop should be executed as long as `x` is less than `width`.
 - `{` and the corresponding `}` at the bottom: these braces enclose the code that should be repeated.
-- `x = x + circleDiameter;`: this is one instruction we want to be repeated. This will alter the value of `x`, incrementing it by `circleDiameter` every time we go through the loop.
+- `x = x + rectangleWidth;`: this is one instruction we want to be repeated. This will alter the value of `x`, incrementing it by `rectangleWidth` every time we go through the loop.
 
-If we save and refresh, we'll see nothing. That's because we there is no code inside the while-loop that affects the canvas. Let's add a line to draw an ellipse at the top of the canvas:
+If we save and refresh, we'll see nothing. That's because we there is no code inside the for-loop that affects the canvas. Let's add a line to draw a rectangle:
 
 ```js
 function draw() {
-  var x = 0;
-  while (x <= width) {
-    ellipse(x, 0, circleDiameter, circleDiameter);
-    x = x + circleDiameter;
+  for (var x = 0; x < width; x = x + rectangleWidth) {
+    rect(x, 0, rectangleWidth, height);
   }
 }
 ```
 
-We're supplying `x` as the x-coordinate (cleverly named, eh?), and 0 as the y-coordinate, of the ellipse's center.
+We're supplying `x` as the x-coordinate (cleverly named, eh?), and 0 as the y-coordinate, of the rectangle's top-left corner.
 
-If you save and refresh, you'll see a line of cut-off circles at the top. Since the value of `x` is increased by `circleDiameter` after every iteration of the while-loop, circles are drawn in intervals of `circleDiameter` pixels, just like how you changed the x-coordinate argument in `ellipse()` when you were manually creating each circle. This is the magic of the while-loop.
+If you save and refresh, you'll see the canvas split up into rectangles of dimension `rectangleWidth` and `height`. (`height`, as you may have guessed, is the counterpart to `width`, and it is where p5.js stores the height of the canvas.) Since the value of `x` is increased by `rectangleWidth` after every iteration of the for-loop, rectangles are drawn in intervals of `rectangleWidth` pixels, just like how you changed the x-coordinate argument in `rect` when you were manually creating each rectangle. This is the magic of the for-loop.
 
-As to why the circles are cut off -- this is because we set the y-coordinate of the _center_ of every circle to 0.
+**Remark: if your page is frozen, refresh the page and check your for-loop code. Chances are you've got an [infinite loop](https://en.wikipedia.org/wiki/Infinite_loop).**
 
-**Remark: if your page is frozen, refresh the page and check your while-loop code. Chances are you've got an [infinite loop](https://en.wikipedia.org/wiki/Infinite_loop).**
+### Introducing Mouse Interaction
 
-### Drawing a Grid of Circles
+Let's make the grid of rectangles change color when we hover the mouse over it. In this example, I'll make the rectangles closest to the mouse a bright red, with the rectangles around it fading out in color.
 
-So that's great, we've drawn one row of circles. But what we'd like is to cover the entire canvas with circles.
+p5.js has a `fill` function that will fill the shapes you draw with a specific color and opacity. We can use this to set the color and opaacity of each rectangle as we draw it on the canvas.
 
-Just like we used a loop to repeat circles in the horizontal direction, we can also use another loop to repeat them in the vertical direction.
+Since the `draw` function TODO
 
-If we wrap our existing while-loop in another while-loop, we'll be performing the action of filling an entire row with circles, multiple times. And thus covering multiple rows.
+### Drawing a Grid of Rectangles
 
-Let's put everything so far inside another while-loop. Don't forget to update `ellipse()`:
+So that's great, we've created one row of rectangles. But what we'd like is a grid of rectangles (or squares, if you will.)
+
+Just like we used a loop to repeat rectangles in the horizontal direction, we can also use another loop to repeat them in the vertical direction.
+
+If we wrap our existing for-loop in another for-loop, we'll be performing the action of filling an entire row with circles, multiple times. And thus covering multiple rows.
+
+Let's put everything so far inside another for-loop. Don't forget to update `rect` with the proper y-coordinate and rectangle height arguments:
 
 ```js
 function draw() {
-  var y = 0;
-  while (y <= height) {
-
-    var x = 0;
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
+  for (var y = 0; y < height; y = y + rectangleWidth) {
+    for (var x = 0; x < width; x = x + rectangleWidth) {
+      rect(x, y, rectangleWidth, rectangleWidth);
     }
-
-    y = y + circleDiameter;
   }
 }
 ```
 
-As with the previous while-loop's `x`, we're executing the code inside the `{` and `}` as long as the value of `y`, which we've initialized at `0`, is less than or equal to `height`. (`height`, as you may have guessed, is the counterpart to `width`, and it is where p5.js stores the height of the canvas.) We're also incrementing `y` at the end of each iteration by `circleDiameter`.
+As with the previous for-loop's `x`, we're executing the code inside the `{` and `}` as long as the value of `y`, which we've initialized at `0`, is less than `height`. We're also incrementing `y` at the end of each iteration by `rectangleWidth`.
 
 Using this incrementing `y` variable as our y-coordinate is how we're able to draw rows up and down the canvas.
 
 Save and refresh Live Preview to check it out!
 
-### Offsetting the Circles in the Y-Direction
-
-We want the circles to overlap, so let's change the spacing in the y-direction.
-
-We can achieve this by changing the last line of the `y` while-loop to increment by `circleDiameter/2` instead of `circleDiameter`.
-
-We'll create a variable (call it `circleRadius`) for this, at the top of the file, define it in `setup()`, and make the replacement in the last line of the `y` while-loop:
-
-```js
-var NUM_CIRCLES = 12;
-var circleDiameter;
-var circleRadius;
-
-function setup() {
-  createCanvas(480, 600);
-  circleDiameter = width/NUM_CIRCLES;
-  circleRadius = circleDiameter/2;
-}
-
-function draw() {
-  var y = 0;
-  while (y <= height) {
-
-    var x = 0;
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y + circleRadius;
-  }
-}
-```
-
-Save and refresh Live Preview to see the change.
-
-### Offsetting the Circles in the X-Direction
-
-It looks pretty cool right now, but our circles aren't overlapping exactly right. It looks like every other row should be shifted horizontally by `circleRadius`.
-
-We can keep track of shifted rows by using a flag. A flag is just a variable that stores a `true`/`false` value.
-
-Let's add one in our `draw()` function:
-
-```js
-function draw() {
-  var isShifted = false;
-
-  var y = 0;
-  while (y <= height) {
-
-    var x = 0;
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y + circleRadius;
-  }
-}
-```
-
-To differentiate between rows, we should add a line to flip the flag at the bottom of the `y` while-loop, underneath the line that flips `isShifted`. This is because each pass through the `y` while-loop creates a new row, thus it would be appropriate after the creation of each row to flip the flag.
-
-We'll using the negation operator (`!`) to flip from `false` to `true` and vice versa:
-
-```js
-function draw() {
-  var isShifted = false;
-
-  var y = 0;
-  while (y <= height) {
-
-    var x = 0;
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y + circleRadius;
-    isShifted = !isShifted;
-  }
-}
-```
-
-This sets the flag `isShifted` to its opposite. Its initial value was `false`, and after one row, its value will be `true`. Thus, the second row will be an shifted row. After the second row is created, the flag will be flipped back to false, and so on.
-
-Let's create a conditional that will use the flag's value to determine whether or not to shift the row. We'll add this just after we define `x`, inside the `y` while-loop:
-
-```js
-function draw() {
-  var isShifted = false;
-
-  var y = 0;
-  while (y <= height) {
-
-    var x = 0;
-
-    if (isShifted) {
-
-    } else {
-
-    }
-
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y + circleRadius;
-    isShifted = !isShifted;
-  }
-}
-```
-
-Now we just need to make this shift. We'll do this by modifying the starting `x` value. Currently, the starting `x` value is always 0, which results in every row starting at the x-coordinate 0.
-
-We can modify this by removing this definition:
-
-```js
-v̶a̶r̶ ̶x̶ ̶=̶ ̶0̶;̶
-var x;
-```
-
-And setting the value _conditionally_:
-
-```js
-
-  while (y <= height) {
-    var x;
-
-    if (isShifted) {
-      x = circleRadius;
-    } else {
-      x = 0;
-    }
-
-    while (x <= width) {
-
-```
-
-Your `draw()` should now look like this:
-
-```js
-function draw() {
-  var isShifted = false;
-
-  var y = 0;
-  while (y <= height) {
-
-    var x;
-
-    if (isShifted) {
-      x = circleRadius;
-    } else {
-      x = 0;
-    }
-
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y + circleRadius;
-    isShifted = !isShifted;
-  }
-}
-```
-
-Save and check it out!
-
-### Reversing Direction
-
-So you may have noticed that it seems that our circles are overlapping on the wrong side. We wanted them to overlap each other on the top, but they are overlapping on the bottom. This is because they are being drawn from top to bottom, and the upper circles are being drawn over.
-
-We can fix this by setting the initial value of `y` to the height, and changing the condition in the while-loop to check if `y` is greater than 0. We'll also decrement the value of `y` instead of incrementing it, at the bottom of the `y` while-loop;
-
-```js
-function draw() {
-  var isShifted = false;
-
-  var y = height;
-  while (y >= 0) {
-
-    var x;
-
-    if (isShifted) {
-      x = circleRadius;
-    } else {
-      x = 0;
-    }
-
-    while (x <= width) {
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
-    }
-
-    y = y - circleRadius;
-    isShifted = !isShifted;
-  }
-}
-```
-
-If your page has frozen, you've probably introduced an infinite loop. Refresh your Cloud 9 workspace and check your code!
-
-Save to see the changes!
-
-## Part IV: Adding Color
-
-Black and white is nice, but how about some color? p5.js provides several helpful functions, including: [`color()`](http://p5js.org/reference/#p5/color), [`fill()`](http://p5js.org/reference/#p5/fill), and [`stroke()`](http://p5js.org/reference/#p5/stroke) that help modify the graphics.
 
 ### Changing Fill
 
-One way to use `color()` is to provide 3 arguments; each corresponding to [red (R), green (G), and blue (B) values](https://en.wikipedia.org/wiki/RGB_color_model).
+One way to use `color` is to provide 3 arguments; each corresponding to [red (R), green (G), and blue (B) values](https://en.wikipedia.org/wiki/RGB_color_model).
 
 Let's choose our color to be red. The R, G, and B values for a bright red are 255, 0, and 0, respectively. We can create this color with `color(255, 0, 0)`.
 
-Now we'll pass this color to the `fill()` function. If we do this before drawing the ellipse, all the ellipses we draw will be filled with that color. Let's give this a try and type the following line immediately before calling the `ellipse()` function in `draw()`:
+Now we'll pass this color to the `fill` function. If we do this before drawing the ellipse, all the ellipses we draw will be filled with that color. Let's give this a try and type the following line immediately before calling the `ellipse` function in `draw`:
 
 ```js
 fill(color(255, 0, 0));
@@ -473,9 +253,9 @@ Save and refresh. Your canvas should now look like red dragon scales.
 
 ### Changing Stroke
 
-Just like how there's a `fill()` for changing the fill color, there's a `stroke()` for changing the stroke color. Right now, the stroke is black (hence the black outlines).
+Just like how there's a `fill` for changing the fill color, there's a `stroke` for changing the stroke color. Right now, the stroke is black (hence the black outlines).
 
-We can make a garish display by adding a bright green stroke, if we place the following line beneath our `fill()` function call:
+We can make a garish display by adding a bright green stroke, if we place the following line beneath our `fill` function call:
 
 ```js
 stroke(color(0, 255, 0));
@@ -490,15 +270,15 @@ While this looks pretty cool, let's make the rows different colors. We can get t
 Let's do this by first declaring variables to store each of the R, G, and B values at the top of the file:
 
 ```js
-var NUM_CIRCLES = 12;
-var circleDiameter;
+var NUM_RECTANGLES = 10;
+var rectangleWidth;
 var circleRadius;
 var rVal;
 var gVal;
 var bVal;
 ```
 
-Next, we'll set their initial values at the top of the `draw()` function:
+Next, we'll set their initial values at the top of the `draw` function:
 
 ```js
 function draw() {
@@ -513,7 +293,7 @@ function draw() {
 }
 ```
 
-And then increment the values at the bottom of the `y` while-loop in `draw()`, by adding these lines.
+And then increment the values at the bottom of the `y` for-loop in `draw`, by adding these lines.
 
 ```js
 ...
@@ -527,9 +307,9 @@ And then increment the values at the bottom of the `y` while-loop in `draw()`, b
 
 Here, we're decrementing the R value by 2, incrementing the G value by 7, and the B value by 3.
 
-You can also try adding those three lines within the x while-loop, which will modify the colors within each row.
+You can also try adding those three lines within the x for-loop, which will modify the colors within each row.
 
-Finally, we'll replace the arguments in `color()` with these variables, in both the `fill()` and `stroke()` function calls:
+Finally, we'll replace the arguments in `color` with these variables, in both the `fill` and `stroke` function calls:
 
 ```js
 fill(color(rVal,gVal,bVal));
@@ -542,7 +322,7 @@ Now, save and see the gradient effect you've applied throughout the pattern! Yay
 
 ### Downloading Your Masterpiece
 
-You can actually download the this cool pattern to your computer, to use as a desktop background or what have you. p5.js provides a function [`saveCanvas()`](https://p5js.org/reference/#p5/saveCanvas) to download the canvas.
+You can actually download the this cool pattern to your computer, to use as a desktop background or what have you. p5.js provides a function [`saveCanvas`](https://p5js.org/reference/#p5/saveCanvas) to download the canvas.
 
 We can attach this function to a key press by using p5's `keyPressed` function. Add this at the bottom of your `main.js`:
 
@@ -555,7 +335,7 @@ function keyPressed() {
 }
 ```
 
-This code says that if the user presses a key with the `keyCode` 115 or 83 (which both correspond to "s"), `saveCanvas()` should be called and the file should be saved as `geometricPattern.png`.
+This code says that if the user presses a key with the `keyCode` 115 or 83 (which both correspond to "s"), `saveCanvas` should be called and the file should be saved as `geometricPattern.png`.
 
 The `return false;` at the end of the function tells the browser to ignore any default behavior that might be associated with the pressed key (ex. if you press enter, the browser thinks that you're trying to submit a form by default -- this prevents that).
 
@@ -579,29 +359,29 @@ _Even if you have not been previously diagnosed with epilepsy, you should be car
 
 ---
 
-Let's first add the line to change the `draw()` function from running 60 times a second to 5 times a second. We can do this by using the `frameRate()` function in `setup()`:
+Let's first add the line to change the `draw` function from running 60 times a second to 5 times a second. We can do this by using the `frameRate` function in `setup`:
 
 ```js
 function setup() {
-  createCanvas(480, 600);
+  createCanvas(400, 600);
 
   frameRate(5);
 
-  circleDiameter = width/NUM_CIRCLES;
-  circleRadius = circleDiameter/2;
+  rectangleWidth = width/NUM_RECTANGLES;
+  circleRadius = rectangleWidth/2;
 }
 ```
 
-That said, we can create a cool scrolling color effect by manipulating our colors to cycle. Right now we are resetting our initial RGB values each time `draw()` runs. But if we didn't reset every time, we could have rotating colors.
+That said, we can create a cool scrolling color effect by manipulating our colors to cycle. Right now we are resetting our initial RGB values each time `draw` runs. But if we didn't reset every time, we could have rotating colors.
 
 ```js
 function setup() {
-  createCanvas(480, 600);
+  createCanvas(400, 600);
 
   frameRate(5);
 
-  circleDiameter = width/NUM_CIRCLES;
-  circleRadius = circleDiameter/2;
+  rectangleWidth = width/NUM_RECTANGLES;
+  circleRadius = rectangleWidth/2;
 
   rVal = 255;
   gVal = 0;
@@ -614,9 +394,9 @@ function draw() {
 ...
 ```
 
-If we move the three lines that set the initial RGB values to `setup()`, then we will be increment the values indefinitely. If we save and refresh our Live Preview, we'll see that everything is white. What's the deal?
+If we move the three lines that set the initial RGB values to `setup`, then we will be increment the values indefinitely. If we save and refresh our Live Preview, we'll see that everything is white. What's the deal?
 
-Since the max values of RGB are 255, 255, 255 (which makes white), any values above that will be white. The `draw()` function executes so many times per second that you can't see the color change progression.
+Since the max values of RGB are 255, 255, 255 (which makes white), any values above that will be white. The `draw` function executes so many times per second that you can't see the color change progression.
 
 We can have color progression while keeping the values below 255 by [modding](https://en.wikipedia.org/wiki/Modulo_operation) each of these by 256. "Modding a by b" means that we divide a by b, and take the remainder. For example, 5mod2 gives us 1, because 5 divided by 2 has a remainder of 1. This arithmetic operation is available to us in JavaScript with the modulo (`%`) operator.
 
@@ -641,9 +421,9 @@ As a check, your `main.js` should look like this:
 Final code:
 
 ```js
-var NUM_CIRCLES = 12;
+var NUM_RECTANGLES = 10;
 
-var circleDiameter;
+var rectangleWidth;
 var circleRadius;
 
 var rVal;
@@ -651,12 +431,12 @@ var gVal;
 var bVal;
 
 function setup() {
-  createCanvas(480, 600);
+  createCanvas(400, 600);
 
   frameRate(5);
 
-  circleDiameter = width/NUM_CIRCLES;
-  circleRadius = circleDiameter/2;
+  rectangleWidth = width/NUM_RECTANGLES;
+  circleRadius = rectangleWidth/2;
 
   rVal = 255;
   gVal = 0;
@@ -680,8 +460,8 @@ function draw() {
     while (x <= width) {
       stroke(color(rVal, gVal, bVal));
       fill(color(rVal, gVal, bVal));
-      ellipse(x, y, circleDiameter, circleDiameter);
-      x = x + circleDiameter;
+      ellipse(x, y, rectangleWidth, rectangleWidth);
+      x = x + rectangleWidth;
     }
 
     y = y - circleRadius;
