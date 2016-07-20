@@ -169,6 +169,8 @@ A loop can be used to repeat a set of instructions as many times as you decide. 
 
 ![](img/for_loop.gif)
 
+***Loops can be hard to first understand. If you want to see this in action, head over to our [loops example page](./loops.md).***
+
 Let's remove all those repetitive lines and add a loop into our `draw` function. Our `draw` function should now look like this:
 
 ```js
